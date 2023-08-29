@@ -4,22 +4,52 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+
+    .goog-te-banner-frame.skiptranslate,
+        .goog-te-gadget-simple img {
+          display: none !important;
+        }
+    
+        /* Hide Google Translate tooltip on hover */
+        .goog-tooltip {
+          display: none !important;
+        }
+    
+        /* Adjust other styles as needed */
+        body {
+          margin-top: 0; /* Remove default margin */
+        }
+      </style>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-  <link
-  rel="stylesheet"
-  href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
-/>
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"/>
+
+
 
 </head>
-<body class="d-flex flex-column vh-100">
+<body class="d-flex flex-column vh-100" data-bs-theme="light" >
+  
+  
   <%- include("../partials/navbar") %>
   <main class="container">
     <%- include("../partials/flash") %>
      <%- body %>
   </main>
+ 
   <%- include("../partials/footer") %>
+
      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa" crossorigin="anonymous"></script>
 
+    <script>
+      function myFunction() {
+        var element = document.body;
+        element.dataset.bsTheme =
+          element.dataset.bsTheme == "light" ? "dark" : "light";
+      }
+</script>
+
+
 </body>
 </html>
+

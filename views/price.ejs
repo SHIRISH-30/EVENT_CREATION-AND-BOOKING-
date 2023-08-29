@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Subscription Page</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  
+  .subscription-container {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+  .subscription-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .subscription-button:hover {
+    background-color: #0056b3;
+  }
+</style>
+</head>
+<body>
+  <div class="subscription-container">
+    <h2>Subscribe to Unlock Premium Features</h2>
+    <p>Stay updated with our latest news and offers!</p>
+    <form action="/payment" method="POST">
+        <script
+																 		src="//checkout.stripe.com/v2/checkout.js"
+																 		class="stripe-button"
+																 		data-key="<%= key %>"
+																 		data-amount="50000"
+																 		data-currency="INR"
+																 		data-name="Customer"
+																 		data-description="Donation"
+																 		data-locale="auto" >
+																 		</script>
+      <button class="subscription-button" type="submit">Subscribe</button>
+    </form>
+  </div>
+ 
+
+</body>
+</html>

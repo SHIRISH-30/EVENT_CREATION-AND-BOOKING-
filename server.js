@@ -9,8 +9,11 @@ app.use(express.urlencoded({extended:true}));
 //method oveeride for put delete req
 const methodOverride=require("method-override");
 app.use(methodOverride("_method"));
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const catchAsync=require("./utils/CatchAsync")
+const ExpressError=require("./utils/ExpressError")
 //path for veiws and dotenv
 const path = require('path');
 app.set("view engine", "ejs");
@@ -27,7 +30,7 @@ const GoogleStragery=require("passport-google-oauth20").Strategy;
 const flash=require("connect-flash");
 app.use(flash());
 
-
+app.use(express.static(path.join(__dirname,"public")));
 
 app.use(session({
     secret:"key",
@@ -70,7 +73,10 @@ callbackURL:"http://localhost:4003/auth/google/callback"},async function(acessTo
    }
 }));
 
-
+//Stripe api
+const Publishable_Key="pk_test_51NkUQgSDWmLXZZwiepNfIyBusYpTD6ilmn3Runtqwc7KS3YGDxtYtXCuIXEWIzsMl9IvscZUSGP1ED1UkyluWSOv00NeROTsP5";
+const Secret_Key="sk_test_51NkUQgSDWmLXZZwiNowpbbX5exLS6gIuIZdapQScxxocrSziQ4W8hEtkCfzLgpSmA7qshnIULDEZCDUAHSkNd7Bj00JSVyq3uJ";
+const stripe = require('stripe')(Secret_Key)
 
 const connectDB = async () => {
   try {
@@ -105,11 +111,13 @@ app.listen(4003,(req,res)=>{
 
 app.get("/home",(req,res)=>{
  
+  
+
     if(req.user)
     {
       req.flash("success","WELCOME")
     }
-    res.render("home",{user:req.user});
+    res.render("home",{user:req.user,key: Publishable_Key});
   
    
     
@@ -154,7 +162,9 @@ app.get('/auth/google',
     res.send("Something Went Wrong :(")
   })
 
-
+app.get("/chat",(req,res)=>{
+  res.render("chat");
+})
    // Presist user data after successful authentication
    passport.serializeUser(function (user, done) {
     done(null, user.id);
@@ -169,11 +179,50 @@ app.get('/auth/google',
     }
   });
 
-  //if user goes to another path except campground therefore to handle it//
-//app.all and * refers to all request and path correspondingly
-app.all("*",(req,res,next)=>{
-  next(new ExpressError("Page Not Found",404));
-})
+  //Stripe Api
+
+  app.get("/price",(req,res)=>{
+    res.render("price", {
+      key: Publishable_Key
+      });
+  })
+  app.post('/payment', async function(req, res) {
+    try {
+      // Create a customer in Stripe
+      const customer = await stripe.customers.create({
+        email: req.body.stripeEmail,
+        source: req.body.stripeToken,
+        name: 'Customer',
+        address: {
+          line1: 'TC 9/4 Old MES colony',
+          postal_code: '110092',
+          city: 'New Delhi',
+          state: 'Delhi',
+          country: 'India'
+        }
+      });
+  
+      // Add a payment source to the customer (a credit card in this case)
+      // await stripe.customers.createSource(customer.id, {
+      //   source: req.body.stripeToken
+      // });
+  
+      // Charge the customer using the payment source
+      const charge = await stripe.paymentIntents.create({
+        amount: 50000, // Charging Rs 25
+        description: 'Donation',
+        currency: 'INR',
+        customer: customer.id
+      });
+  
+      // Redirect to a success page
+      res.sendFile(path.join(__dirname + '/thanks.html'));
+    } catch (err) {
+      // Handle errors
+      res.send(err);
+    }
+  });
+  
 
 //error middleware
 
