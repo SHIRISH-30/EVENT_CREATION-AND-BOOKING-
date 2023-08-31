@@ -245,7 +245,7 @@ app.get("/chat",(req,res)=>{
         secure: false,
         auth: {
             user: "shiroshetty30@gmail.com",
-            pass: "ibaymoahwvqddpty"
+            pass: ""
         }
 
     });
