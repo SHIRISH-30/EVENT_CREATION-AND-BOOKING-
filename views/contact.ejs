@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email in NodeJs</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+        }
+
+        .container {
+            box-sizing: border-box;
+            background-color: white;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            top: 50px;
+        }
+
+        h4 {
+            position: absolute;
+            top: -40px;
+            font-size: 22px;
+        }
+
+        .contact {
+            background-color: orangered;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 10px 10px 61px 0px rgba(0, 0, 0, 0.75);
+        }
+
+        .input {
+            padding: 5px;
+            margin: 2px;
+            width: 300px;
+            border-radius: 4px;
+            transition: width 1s;
+        }
+
+        .btn {
+            padding: 10px;
+            width: 100px;
+            border-radius: 10px;
+            background-color: blueviolet;
+            font-size: 16px;
+            font-weight: 900;
+            opacity: 0.75;
+        }
+
+        .btn:hover {
+            border-color: blueviolet;
+            opacity: 1;
+        }
+
+        .input:focus {
+            width: 306px;
+            border-color: blueviolet;
+            box-shadow: 10px 10px 61px 0px rgba(0, 0, 0, 0.75);
+        }
+
+        .message {
+            position: relative;
+            background-color: orange;
+            width: 380px;
+            padding: 10px;
+            border-radius: 20px;
+            top: -180px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h4>Send email in Node.js using nodemailer</h4>
+        <div class="contact">
+            <form action="/send" method="get">
+                <input type="email" name="email1" id="email" placeholder="Type email-id" required class="input"><br>
+                <input type="text" name="subject" placeholder="Type subject here" required class="input"><br>
+                <textarea name="message" id="message" cols="60" rows="10" class="input" placeholder="Type message here..."></textarea><br>
+                <input type="submit" value="Send" name="send" class="btn">
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

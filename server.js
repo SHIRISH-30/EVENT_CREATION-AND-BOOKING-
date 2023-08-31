@@ -99,12 +99,16 @@ app.use((req,res,next)=>{
 })
 connectDB();
 
+//nodemailer
+
+const nodemailer = require('nodemailer')
+
 // //for styling//
 // installed ejs-mate // require it and set it//
 const ejsMate=require("ejs-mate");
 app.engine("ejs",ejsMate); 
 
-
+const {isLoggedIn}=require("./middleware");
 app.listen(4003,(req,res)=>{
     console.log("server started");
 })
@@ -181,12 +185,12 @@ app.get("/chat",(req,res)=>{
 
   //Stripe Api
 
-  app.get("/price",(req,res)=>{
+  app.get("/price",isLoggedIn,(req,res)=>{
     res.render("price", {
       key: Publishable_Key
       });
   })
-  app.post('/payment', async function(req, res) {
+  app.post('/payment',async function(req, res) {
     try {
       // Create a customer in Stripe
       const customer = await stripe.customers.create({
@@ -222,8 +226,43 @@ app.get("/chat",(req,res)=>{
       res.send(err);
     }
   });
-  
+  //nodemailer
+  app.get("/contact",(req,res)=>{
+    res.render("contact");
+  })
 
+  app.get('/send', (req, res) => {
+    // fetching data from form
+
+    let email1 = req.query.email1;
+    let subject = req.query.subject;
+    let message = req.query.message;
+
+
+    const mail = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        auth: {
+            user: "shiroshetty30@gmail.com",
+            pass: "ibaymoahwvqddpty"
+        }
+
+    });
+
+    mail.sendMail({
+        from: 'shiroshetty30@gmail.com',
+        to: [email1],
+        subject: subject,
+        html: '<h1 >' + message + '</h1>'
+
+    }, (err) => {
+        if (err) throw err;
+        req.flash("success","mail has been sent");
+        res.render('home');
+
+    });
+});
 //error middleware
 
 app.use((err,req,res,next)=>{
