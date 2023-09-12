@@ -35,15 +35,30 @@
   <script src="/javascripts/chat.js" ></script>
 
   <% if (currentUser) { %>
-    <%= user.firstName %>
+    <div class="jsin">
+      <h3>Welcome <span class="text"></span></h3>
+    </div>
   <% } else { %>
-    HOME
+    <div class="jsin">
+      <h3>Welcome</h3>
+      <p>Please <a href="/auth/google">login</a> to continue.</p>
+    </div>
   <% } %>
-
+  
   <div>
     heelpp
   </div>
-
-
-
-  
+  <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      <% if (currentUser) { %>
+        var typed = new Typed(".text", {
+          strings: ['<%= currentUser.firstName %>','Explore the Content of the Page'],
+          typeSpeed: 100,
+          backSpeed: 100,
+          backDelay: 1000,
+          loop: true,
+        });
+      <% } %>
+    });
+  </script>
