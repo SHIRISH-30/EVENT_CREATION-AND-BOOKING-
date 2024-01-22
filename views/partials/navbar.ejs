@@ -1,4 +1,6 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
   <!-- Add Bootstrap CSS link -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
@@ -8,12 +10,14 @@
     }
     .navbar-brand {
       font-weight: bold;
+      font-size: 1.5rem; /* Adjust the font size for the brand */
     }
     .navbar-toggler-icon {
       background-color: #fff;
     }
     .nav-link {
       color: #fff; /* Text color for links */
+      font-size: 1.2rem; /* Adjust the font size for the links */
     }
     .nav-link:hover {
       color: #f8f9fa; /* Hover color for links */
@@ -22,10 +26,12 @@
       background-color: #f8f9fa; /* Background color for the switch */
     }
   </style>
+</head>
+<body>
 
   <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Navbar</a>
+      <a class="navbar-brand" href="/home">EVENT MANAGER</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -40,6 +46,9 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/contact">Contact Us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/discover">Discover</a>
             </li>
             <li class="nav-item">
               <!-- Conditional login/logout link -->
@@ -94,5 +103,8 @@
       element.dataset.bsTheme =
         element.dataset.bsTheme == "light" ? "dark" : "light";
     }
-</script>
+  </script>
   <!-- Your custom scripts here -->
+
+</body>
+</html>

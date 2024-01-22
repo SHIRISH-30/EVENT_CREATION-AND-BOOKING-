@@ -1,0 +1,175 @@
+<!-- single-event.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title><%= eventData.eventName %> Details</title>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin-top: 50px;
+            position: relative;
+        }
+
+        h2 {
+            color: #007bff;
+        }
+
+        .event-details {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .event-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .event-image:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("/uploads/<%= eventData.eventImage %>") center/cover;
+            filter: blur(10px);
+            z-index: -1;
+        }
+
+        .event-body {
+            padding: 15px;
+        }
+
+        .event-title {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #007bff;
+            text-align: center;
+        }
+
+        .event-text {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .table {
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .table th,
+        .table td {
+            text-align: center;
+        }
+
+        .btn-primary {
+            margin-top: 20px;
+            width: 100%;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="event-details">
+            <img src="/uploads/<%= eventData.eventImage %>" class="event-image" alt="Event Image">
+            <div class="event-body">
+                <h2 class="event-title"><%= eventData.eventName %></h2>
+                <p class="event-text">
+                    <strong>Event Date:</strong> <%= new Date(eventData.eventDate).toLocaleDateString() %><br>
+                    <strong>Event Time:</strong> <%= eventData.eventTime %><br>
+                    <strong>Event Location:</strong> <%= eventData.eventLocation %><br>
+                    <strong>Total Tickets:</strong> <%= eventData.totalTickets %><br>
+                  
+                    <h6>Ticket Categories:</h6>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Category Name</th>
+                                <th>Tickets</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% eventData.ticketCategories.forEach(category => { %>
+                                <tr>
+                                    <td><%= category.categoryName %></td>
+                                    <td><%= category.categoryTickets %></td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                    <p class="event-text">
+                        <strong>Description:</strong> <%= eventData.eventDescription %>
+                    </p>
+                </p>
+                
+                <% if (currentUser.firstName == owner) { %>
+                    <!-- Show buttons only to the event owner -->
+                    <div class="text-center">
+                        <a href="/edit-event/<%= eventData._id %>" class="btn btn-primary">Edit</a>
+                        <form id="deleteEventForm" action="/delete-event/<%= eventData._id %>" method="POST">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this event?')">Delete</button>
+                          </form>
+                    </div>
+
+                    <!-- Show booked users -->
+        <h6>Booked Users:</h6>
+        <ul>
+            <% eventData.bookedTickets.forEach(booking => { %>
+                <li><%= booking.user.displayName %> - <%= booking.numTickets %> tickets - Category: <%= booking.categoryName %> - Phone-Number: <%= booking.phoneNumber %></li>
+            <% }); %>
+        </ul>
+                <% } else { %>
+                    <!-- Show "Book Ticket" button for non-owners -->
+                    <div class="text-center">
+                        <% if (eventData.totalTickets > 0) { %>
+                            <a href="/book-ticket/<%= eventData._id %>" class="btn btn-success">Book Ticket</a>
+                        <% } else { %>
+                            <p class="text-danger">Tickets are sold out!</p>
+                        <% } %>
+                    </div>
+                <% } %>
+                
+                 
+                <a href="/discover" class="btn btn-primary">Back to Events</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

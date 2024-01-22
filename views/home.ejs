@@ -1,21 +1,18 @@
 <% layout('layouts/boilerplate') %>
 
+<link rel="stylesheet" href="/stylesheets/chat.css">
+<link rel="stylesheet" href="/stylesheets/homePage.css">
 
-  
- 
-  <link rel="stylesheet" href="/stylesheets/chat.css">
+<!-- Google Fonts Link For Icons -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
 
-  <!-- Google Fonts Link For Icons -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
-
-
-  <!-- Include the HTML code for the chatbot interface -->
-  <button class="chatbot-toggler">
-    <span class="material-symbols-rounded">mode_comment</span>
-    <span class="material-symbols-outlined">close</span>
-  </button>
-  <div class="chatbot">
+<!-- Include the HTML code for the chatbot interface -->
+<button class="chatbot-toggler">
+  <span class="material-symbols-rounded">mode_comment</span>
+  <span class="material-symbols-outlined">close</span>
+</button>
+<div class="chatbot">
     <!-- ... (rest of the chatbot HTML code) ... -->
     <header>
       <h2>Chatbot</h2>
@@ -32,28 +29,37 @@
       <span id="send-btn" class="material-symbols-rounded">send</span>
     </div>
   </div>
-  <script src="/javascripts/chat.js" ></script>
+<script src="/javascripts/chat.js"></script>
 
-  <% if (currentUser) { %>
-    <div class="jsin">
-      <h3>Welcome <span class="text"></span></h3>
-    </div>
-  <% } else { %>
-    <div class="jsin">
-      <h3>Welcome</h3>
-      <p>Please <a href="/auth/google">login</a> to continue.</p>
-    </div>
-  <% } %>
-  
-  <div>
-    heelpp
+
+
+<section class="bgimage" id="home">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hero-text">
+        <% if (currentUser) { %>
+        <div class="jsin">
+         <h3 class="welcome">Welcome <span class="text"></span></h3>
   </div>
-  <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+<% } else { %>
+  <div class="jsin">
+    <h3 style="font-size: 80%;">Welcome</h3>
+    <p style="font-size: 50%;">Please <a href="/auth/google">Login</a> to continue.</p>
+  </div>
+<% } %>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+<script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       <% if (currentUser) { %>
         var typed = new Typed(".text", {
-          strings: ['<%= currentUser.firstName %>','Explore the Content of the Page'],
+          strings: ['<%= currentUser.firstName %>','Explore Event Manager'],
           typeSpeed: 100,
           backSpeed: 100,
           backDelay: 1000,

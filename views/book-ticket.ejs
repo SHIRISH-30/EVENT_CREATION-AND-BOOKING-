@@ -1,0 +1,104 @@
+<!-- book-ticket.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Tickets</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            color: #007bff;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Book Tickets for <%= event.eventName %></h2>
+
+        <form action="/book-ticket/<%= event._id %>" method="POST">
+            <div class="form-group">
+                <label for="numTickets">Number of Tickets:</label>
+                <input type="number" name="numTickets" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phoneNumber">Mobile Number:</label>
+                <input type="tel" name="phoneNumber" class="form-control" placeholder="Enter your mobile number" required>
+            </div>
+
+            <!-- Add input field for categoryName -->
+            <div class="form-group">
+                <label for="categoryName">Select Category:</label>
+                <select name="categoryName" class="form-control" required>
+                    <% event.ticketCategories.forEach(category => { %>
+                        <option value="<%= category.categoryName %>"><%= category.categoryName %></option>
+                    <% }); %>
+                </select>
+            </div>
+            <form action="/payment" method="POST">
+                <script
+                                                                                 src="//checkout.stripe.com/v2/checkout.js"
+                                                                                 class="stripe-button"
+                                                                                 data-key="<%= key %>"
+                                                                                 data-amount="50000"
+                                                                                 data-currency="INR"
+                                                                                 data-name="Customer"
+                                                                                 data-description="Donation"
+                                                                                 data-locale="auto" >
+                                                                                 </script>
+              
+            </form>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Add your custom scripts here if needed -->
+
+</body>
+
+</html>

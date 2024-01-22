@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <title>Event Management Form</title>
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .container {
+      
+    }
+
+    h2 {
+      color: #007bff;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+
+    .ticket-row {
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container mt-5">
+  <h2 class="mb-4">Create Event</h2>
+
+  <form id="eventDetailsForm" action="/create-event" method="POST" enctype="multipart/form-data">
+    <!-- Event Details -->
+    <div class="form-group">
+      <label for="eventName">Event Name:</label>
+      <input type="text" class="form-control" id="eventName" name="eventName" placeholder="Enter event name" required>
+      <div class="invalid-feedback">
+        Please enter the event name.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="eventDate">Event Date:</label>
+      <input type="date" class="form-control" id="eventDate" name="eventDate" required>
+      <div class="invalid-feedback">
+        Please enter the event date.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="eventOwner">Event Owner:</label>
+      <input type="text" class="form-control" id="eventOwner" name="eventOwner"  value='<%= currentUser.firstName %>'>
+      <div class="invalid-feedback">
+        Please enter the owner name.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="eventTime">Event Time:</label>
+      <input type="time" class="form-control" id="eventTime" name="eventTime" required>
+      <div class="invalid-feedback">
+        Please enter the event time.
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="eventImage">Event Image:</label>
+      <input type="file" class="form-control-file" id="eventImage" name="eventImage" accept="image/*">
+    </div>
+
+ 
+    <div class="form-group">
+      <label for="eventLocation">Event Location:</label>
+      <input type="text" class="form-control" id="eventLocation" name="eventLocation" placeholder="Enter event location" required>
+      <div class="invalid-feedback">
+        Please enter the event location.
+      </div>
+    </div>
+
+    
+    <div class="form-group">
+      <label for="eventDescription">Event Description:</label>
+      <textarea class="form-control" id="eventDescription" name="eventDescription" rows="3" placeholder="Enter event description" required></textarea>
+      <div class="invalid-feedback">
+        Please enter the event description.
+      </div>
+    </div>
+
+    <!-- Step 1: Enter Total Tickets -->
+    <div class="form-group">
+      <label for="totalTickets">Enter Total Tickets:</label>
+      <input type="number" class="form-control" id="totalTickets" name="totalTickets" placeholder="Enter total tickets" required>
+      <div class="invalid-feedback">
+        Please enter the total number of tickets.
+      </div>
+    </div>
+
+    <!-- Step 2: Enter Number of Ticket Categories -->
+    <div class="form-group">
+      <label for="numCategories">Enter Number of Ticket Categories:</label>
+      <input type="number" class="form-control" id="numCategories" name="numCategories" placeholder="Enter number of categories" required>
+      <div class="invalid-feedback">
+        Please enter the number of ticket categories.
+      </div>
+    </div>
+
+  
+    <!-- Dynamic Ticket Category and Allocation Input Fields -->
+    <div id="categoryDetails" style="display: none;">
+      <hr>
+      <h4 class="mb-3">Ticket Category Information</h4>
+      <div id="categoryInputs"></div>
+    </div>
+
+  
+
+    <!-- Change the button type to "button" to prevent automatic form submission -->
+    <button type="button" class="btn btn-primary" onclick="generateCategoryInputs()">Next</button>
+    
+    <!-- Add an onclick event to submit the form when the "Submit" button is clicked -->
+    <button type="button" class="btn btn-primary" onclick="submitForm()">Submit</button>
+  </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+  function generateCategoryInputs() {
+    const numCategories = parseInt(document.getElementById('numCategories').value, 10);
+    if (!isNaN(numCategories) && numCategories > 0) {
+      const categoryInputsContainer = document.getElementById('categoryInputs');
+      categoryInputsContainer.innerHTML = '';
+
+      for (let i = 1; i <= numCategories; i++) {
+        const categoryRow = document.createElement('div');
+        categoryRow.className = 'form-row ticket-row';
+        categoryRow.innerHTML = `
+          <div class="col-md-6 mb-3">
+            <label for="categoryName${i}">Category Name ${i}:</label>
+            <input type="text" class="form-control" id="categoryName${i}" name="categoryName[]" placeholder="Enter category name" required>
+            <div class="invalid-feedback">
+              Please enter the category name.
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="categoryTickets${i}">Price ${i}:</label>
+            <input type="number" class="form-control" id="categoryTickets${i}" name="categoryTickets[]" placeholder="Enter price" required>
+            <div class="invalid-feedback">
+              Please enter a valid number of tickets.
+            </div>
+          </div>
+        `;
+        categoryInputsContainer.appendChild(categoryRow);
+      }
+
+      // Show the dynamic category inputs and hide the total tickets input
+      document.getElementById('numCategories').style.display = 'none';
+      document.getElementById('categoryDetails').style.display = 'block';
+      document.querySelector('button[onclick="generateCategoryInputs()"]').style.display = 'none';
+      document.querySelector('button[type="button"][onclick="submitForm()"]').style.display = 'block';
+    }
+  }
+
+  function submitForm() {
+    document.getElementById('eventDetailsForm').submit();
+  }
+</script>
+</body>
+</html>

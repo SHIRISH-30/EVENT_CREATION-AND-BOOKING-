@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <title>Edit Event</title>
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .container {
+
+    }
+
+    h2 {
+      color: #007bff;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+
+    .ticket-row {
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container mt-5">
+  <h2 class="mb-4">Edit Event</h2>
+
+  <form id="eventDetailsForm" action="/update-event/<%= eventData._id %>" method="POST" enctype="multipart/form-data">
+    <!-- Event Details -->
+    <div class="form-group">
+      <label for="eventName">Event Name:</label>
+      <input type="text" class="form-control" id="eventName" name="eventName" placeholder="Enter event name" value="<%= eventData.eventName %>" required>
+      <div class="invalid-feedback">
+        Please enter the event name.
+      </div>
+    </div>
+    <div class="form-group">
+        <label for="eventDate">Event Date:</label>
+        <!-- Remove placeholder attribute -->
+        <input type="date" class="form-control" id="eventDate" name="eventDate" value="<%= eventData.eventDate.toISOString().split('T')[0] %>" required>
+        <div class="invalid-feedback">
+          Please enter the event date.
+        </div>
+      </div>
+      
+    <div class="form-group">
+      <label for="eventOwner">Event Owner:</label>
+      <input type="text" class="form-control" id="eventOwner" name="eventOwner" value='<%= eventData.created %>' disabled>
+      <div class="invalid-feedback">
+        Please enter the owner name.
+      </div>
+    </div>
+    <!-- Other fields with existing data -->
+
+    <!-- Step 1: Enter Total Tickets -->
+    <div class="form-group">
+      <label for="totalTickets">Enter Total Tickets:</label>
+      <input type="number" class="form-control" id="totalTickets" name="totalTickets" value="<%= eventData.totalTickets %>" required>
+      <div class="invalid-feedback">
+        Please enter the total number of tickets.
+      </div>
+    </div>
+
+    <!-- Step 2: Enter Number of Ticket Categories -->
+    <div class="form-group">
+      <label for="numCategories">Enter Number of Ticket Categories:</label>
+      <input type="number" class="form-control" id="numCategories" name="numCategories" value="<%= eventData.ticketCategories.length %>" disabled>
+      <div class="invalid-feedback">
+        Please enter the number of ticket categories.
+      </div>
+    </div>
+
+    <!-- Dynamic Ticket Category and Allocation Input Fields -->
+    <div id="categoryDetails">
+      <hr>
+      <h4 class="mb-3">Ticket Category Information</h4>
+      <div id="categoryInputs">
+        <% eventData.ticketCategories.forEach((category, index) => { %>
+          <div class="form-row ticket-row">
+            <div class="col-md-6 mb-3">
+              <label for="categoryName<%= index + 1 %>">Category Name <%= index + 1 %>:</label>
+              <input type="text" class="form-control" id="categoryName<%= index + 1 %>" name="categoryName[]" placeholder="Enter category name" value="<%= category.categoryName %>" required>
+              <div class="invalid-feedback">
+                Please enter the category name.
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="categoryTickets<%= index + 1 %>">Price <%= index + 1 %>:</label>
+              <input type="number" class="form-control" id="categoryTickets<%= index + 1 %>" name="categoryTickets[]" placeholder="Enter price" value="<%= category.categoryTickets %>" required>
+              <div class="invalid-feedback">
+                Please enter a valid number of tickets.
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+
+    <!-- Change the button type to "button" to prevent automatic form submission -->
+    <button type="button" class="btn btn-primary" onclick="generateCategoryInputs()">Next</button>
+
+    <!-- Add an onclick event to submit the form when the "Submit" button is clicked -->
+    <button type="button" class="btn btn-primary" onclick="submitForm()">Submit</button>
+  </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+  // Populate existing category data here if needed
+
+  function generateCategoryInputs() {
+    // Modify this function to pre-fill existing category data if needed
+    // Use eventData to get the data
+    const numCategories = parseInt(document.getElementById('numCategories').value, 10);
+    if (!isNaN(numCategories) && numCategories > 0) {
+      const categoryInputsContainer = document.getElementById('categoryInputs');
+      categoryInputsContainer.innerHTML = '';
+
+      for (let i = 1; i <= numCategories; i++) {
+        const categoryRow = document.createElement('div');
+        categoryRow.className = 'form-row ticket-row';
+        categoryRow.innerHTML = `
+          <div class="col-md-6 mb-3">
+            <label for="categoryName${i}">Category Name ${i}:</label>
+            <input type="text" class="form-control" id="categoryName${i}" name="categoryName[]" placeholder="Enter category name" required>
+            <div class="invalid-feedback">
+              Please enter the category name.
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="categoryTickets${i}">Price ${i}:</label>
+            <input type="number" class="form-control" id="categoryTickets${i}" name="categoryTickets[]" placeholder="Enter price" required>
+            <div class="invalid-feedback">
+              Please enter a valid number of tickets.
+            </div>
+          </div>
+        `;
+        categoryInputsContainer.appendChild(categoryRow);
+      }
+
+      // Show the dynamic category inputs and hide the total tickets input
+      document.getElementById('numCategories').style.display = 'none';
+      document.getElementById('categoryDetails').style.display = 'block';
+      document.querySelector('button[onclick="generateCategoryInputs()"]').style.display = 'none';
+      document.querySelector('button[type="button"][onclick="submitForm()"]').style.display = 'block';
+    }
+  }
+
+  function submitForm() {
+    document.getElementById('eventDetailsForm').submit();
+  }
+</script>
+</body>
+</html>
