@@ -73,6 +73,9 @@ Create new events, edit existing ones, and book tickets.
 
 ### Contributing
 Contributions are welcome! Please fork the repository and create a pull request.
+
+### PHOTOS AND DEMO
+
 ![Screenshot 2024-01-22 103614](https://github.com/SHIRISH-30/EVENT_CREATION-AND-BOOKING-/assets/102011980/855c0813-8ca6-4fc0-bdca-55e23074a5dd)
 
 
