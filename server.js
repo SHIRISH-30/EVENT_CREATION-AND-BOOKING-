@@ -33,8 +33,8 @@ const GoogleStragery=require("passport-google-oauth20").Strategy;
 const twilio = require('twilio');
 
 // Twilio credentials
-const accountSid = 'AC42b8aed93d4482bf9542ebeabc31a36e';
-const authToken = '86eab7ba1b4339bd402ca030ec34487d';
+const accountSid = 'YOUR URL';
+const authToken = 'YOUR URL';
 const twilioPhoneNumber = '+14155238886';
 
 const client = twilio(accountSid, authToken);
@@ -59,8 +59,8 @@ app.use(passport.session());
 // app.use(fileUpload());
 
 
-passport.use(new GoogleStragery({clientID:"958261893656-u3o2d39orvcucj7fqsdt584q6kt8m0pt.apps.googleusercontent.com",
-clientSecret:"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",
+passport.use(new GoogleStragery({clientID:"YOUR URL",
+clientSecret:"YOUR URL",
 callbackURL:"http://localhost:4003/auth/google/callback"},async function(acessToken,refreshToken,profile,done){
      //user model me yeh sab daalenge
      const newuser={
@@ -91,8 +91,8 @@ callbackURL:"http://localhost:4003/auth/google/callback"},async function(acessTo
 }));
 
 //Stripe api
-const Publishable_Key="pk_test_51NkUQgSDWmLXZZwiepNfIyBusYpTD6ilmn3Runtqwc7KS3YGDxtYtXCuIXEWIzsMl9IvscZUSGP1ED1UkyluWSOv00NeROTsP5";
-const Secret_Key="sk_test_51NkUQgSDWmLXZZwiNowpbbX5exLS6gIuIZdapQScxxocrSziQ4W8hEtkCfzLgpSmA7qshnIULDEZCDUAHSkNd7Bj00JSVyq3uJ";
+const Publishable_Key="URL";
+const Secret_Key="URL";
 const stripe = require('stripe')(Secret_Key)
 
 const connectDB = async () => {
