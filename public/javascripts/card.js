@@ -1,4 +1,4 @@
-const stripe = Stripe('pk_test_51NkUQgSDWmLXZZwiepNfIyBusYpTD6ilmn3Runtqwc7KS3YGDxtYtXCuIXEWIzsMl9IvscZUSGP1ED1UkyluWSOv00NeROTsP5');
+const stripe = Stripe('URL');
 const elements = stripe.elements();
 
 var style = {
